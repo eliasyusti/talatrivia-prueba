@@ -7,11 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 user_router = APIRouter()
 
 
-@user_router.post("/", response_model=UserResponse)
+@user_router.post("/Rs_crear_usuario", response_model=UserResponse)
 async def register_user(user: UserCreate, db: AsyncSession = Depends(get_db)):
     return await create_user(user, db)
 
 
-@user_router.get("/", response_model=list[UserResponse])
+@user_router.get("/Rs_listar_usuarios", response_model=list[UserResponse])
 async def list_users(db: AsyncSession = Depends(get_db)):
     return await get_users(db)
