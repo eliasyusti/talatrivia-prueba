@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from jose import jwt, JWTError
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
+from app.settings.database import get_db
+from app.usuarios.models.user import User
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 from app.settings.config import (
     SECRET_KEY,
@@ -40,3 +47,28 @@ def decode_token(token: str):
         return payload.get("sub")
     except JWTError:
         return None
+
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+) -> User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="No se pudo validar las credenciales",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    user_email = decode_token(token)
+
+    print(f"Email extraído del token: {user_email}")
+
+    if not isinstance(user_email, str):
+        raise credentials_exception
+
+    user = db.query(User).filter(User.email == user_email).first()
+
+    print(f"Usuario encontrado en la BD: {user}")
+    if user is None:
+        raise credentials_exception
+
+    return user
