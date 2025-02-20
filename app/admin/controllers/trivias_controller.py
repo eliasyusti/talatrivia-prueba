@@ -1,8 +1,7 @@
-from app.admin.models.preguntas_model import Question
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, Depends, status
-from app.admin.models.trivia_model import Trivia
-from app.admin.models.trivia_model import trivia_questions
+from fastapi import HTTPException, Depends
+from app.admin.models.trivia_model import Trivia, trivia_questions
+from app.admin.models.preguntas_model import Question
 from app.admin.schemas.trivia_schema import *
 from app.auth.auth import check_admin, get_current_user
 from app.usuarios.models.user import User
@@ -17,6 +16,13 @@ def create_trivia(
     Crea una trivia sin preguntas asociadas (solo para Admins).
     """
     check_admin(current_user)
+
+    # Validar si ya existe una trivia con el mismo nombre
+    existing_trivia = db.query(Trivia).filter(Trivia.name == trivia_data.name).first()
+    if existing_trivia:
+        raise HTTPException(
+            status_code=400, detail="Ya existe una trivia con este nombre"
+        )
 
     new_trivia = Trivia(name=trivia_data.name, description=trivia_data.description)
     db.add(new_trivia)
@@ -36,18 +42,30 @@ def create_trivia_with_questions(
     """
     check_admin(current_user)
 
-    new_trivia = Trivia(name=trivia_data.name, description=trivia_data.description)
-    db.add(new_trivia)
-    db.commit()
-    db.refresh(new_trivia)
+    # ✅ Validar si la trivia ya existe
+    existing_trivia = db.query(Trivia).filter(Trivia.name == trivia_data.name).first()
+    if existing_trivia:
+        raise HTTPException(
+            status_code=400, detail="Ya existe una trivia con este nombre"
+        )
 
-    questions = db.query(Trivia).filter(Trivia.id.in_(trivia_data.question_ids)).all()
+    # ✅ Validar que todas las preguntas existen antes de crear la trivia
+    questions = (
+        db.query(Question).filter(Question.id.in_(trivia_data.question_ids)).all()
+    )
 
     if len(questions) != len(trivia_data.question_ids):
         raise HTTPException(
             status_code=400, detail="Uno o más IDs de preguntas no existen"
         )
 
+    # ✅ Crear la trivia solo si las preguntas existen
+    new_trivia = Trivia(name=trivia_data.name, description=trivia_data.description)
+    db.add(new_trivia)
+    db.commit()
+    db.refresh(new_trivia)
+
+    # ✅ Asociar preguntas a la trivia
     for question in questions:
         db.execute(
             trivia_questions.insert().values(
@@ -60,41 +78,22 @@ def create_trivia_with_questions(
     return {"message": "Trivia creada con preguntas", "trivia_id": new_trivia.id}
 
 
-def update_trivia_add_questions(
-    trivia_id: int,
-    question_ids: list[int],
-    db: Session,
-    current_user: User = Depends(get_current_user),
-):
+def list_all_trivias(db: Session):
     """
-    Actualiza una trivia agregándole preguntas mediante sus IDs (solo para Admins).
+    Obtiene todas las trivias disponibles.
     """
-    check_admin(current_user)
+    return db.query(Trivia).all()
 
+
+def get_trivia_by_id(trivia_id: int, db: Session):
+    """
+    Obtiene una trivia específica por su ID.
+    """
     trivia = db.query(Trivia).filter(Trivia.id == trivia_id).first()
     if not trivia:
         raise HTTPException(status_code=404, detail="Trivia no encontrada")
 
-    questions = db.query(Trivia).filter(Trivia.id.in_(question_ids)).all()
-
-    if len(questions) != len(question_ids):
-        raise HTTPException(
-            status_code=400, detail="Uno o más IDs de preguntas no existen"
-        )
-
-    for question in questions:
-        db.execute(
-            trivia_questions.insert().values(
-                trivia_id=trivia.id, question_id=question.id
-            )
-        )
-
-    db.commit()
-
-    return {
-        "message": "Trivia actualizada con nuevas preguntas",
-        "trivia_id": trivia.id,
-    }
+    return trivia
 
 
 def delete_trivia(
@@ -113,30 +112,6 @@ def delete_trivia(
     db.commit()
 
     return {"message": "Trivia eliminada exitosamente"}
-
-
-def list_all_trivias(db: Session, current_user: User = Depends(get_current_user)):
-    """
-    Obtiene todas las trivias disponibles (solo para Admins).
-    """
-    check_admin(current_user)
-    trivias = db.query(Trivia).all()
-    return trivias
-
-
-def get_trivia_by_id(
-    trivia_id: int, db: Session, current_user: User = Depends(get_current_user)
-):
-    """
-    Obtiene una trivia específica por su ID (solo para Admins).
-    """
-    check_admin(current_user)
-
-    trivia = db.query(Trivia).filter(Trivia.id == trivia_id).first()
-    if not trivia:
-        raise HTTPException(status_code=404, detail="Trivia no encontrada")
-
-    return trivia
 
 
 def update_trivia(

@@ -32,3 +32,7 @@ class Trivia(Base):
     questions = relationship(
         "Question", secondary=trivia_questions, back_populates="trivias"
     )
+
+    # Relación con respuestas y puntajes de usuarios
+    user_answers = relationship("UserAnswer", back_populates="trivia")
+    user_trivias = relationship("UserTrivia", back_populates="trivia")
