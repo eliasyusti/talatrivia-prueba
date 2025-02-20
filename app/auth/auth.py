@@ -72,3 +72,14 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+def check_admin(user: User):
+    """
+    Verifica si el usuario autenticado tiene el rol de 'Admin'.
+    """
+    if user.role.name != "Admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permisos para realizar esta acción",
+        )

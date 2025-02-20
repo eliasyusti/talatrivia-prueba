@@ -5,10 +5,12 @@ from app.settings.data_inicial import (
 )
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.routes import router
 from app.usuarios.routes.user_route import user_router
 from app.auth.auth_router import auth_router
 from app.admin.routes.preguntas_route import question_router
+from app.admin.routes.trivia_route import (
+    trivia_router,
+)
 
 
 # Crear la aplicación FastAPI
@@ -36,10 +38,11 @@ def startup():
 
 
 # Incluir los routers
-app.include_router(router)
+
 app.include_router(user_router, prefix="/users", tags=["Users"])
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(question_router, prefix="/admin", tags=["Admin"])
+app.include_router(trivia_router, prefix="/trivias", tags=["Trivias"])
 
 # Configurar CORS
 app.add_middleware(
