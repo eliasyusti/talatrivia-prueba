@@ -1,14 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
 from app.settings.database import get_db
 from app.admin.controllers.trivias_controller import *
-from app.admin.schemas.trivia_schema import (
-    TriviaCreate,
-    TriviaWithQuestions,
-    TriviaResponse,
-)
+from app.admin.schemas.trivia_schema import *
 from app.auth.auth import get_current_user
 from app.usuarios.models.user import User
 
@@ -39,31 +35,20 @@ def create_trivia_with_questions_endpoint(
     return create_trivia_with_questions(trivia_data, db, current_user)
 
 
-@trivia_router.put("/{trivia_id}/add-questions", response_model=dict)
-def update_trivia_add_questions_endpoint(
-    trivia_id: int,
-    question_ids: List[int],
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
+@trivia_router.get("/", response_model=List[TriviaResponse])
+def list_all_trivias_endpoint(db: Session = Depends(get_db)):
     """
-    Agrega preguntas ya existentes a una trivia existente. Solo **Admins** pueden usar esta función.
+    Obtiene todas las trivias disponibles.
     """
-    return update_trivia_add_questions(trivia_id, question_ids, db, current_user)
+    return list_all_trivias(db)
 
 
-@trivia_router.put("/{trivia_id}", response_model=dict)
-def update_trivia_endpoint(
-    trivia_id: int,
-    trivia_data: TriviaCreateWithQuestions,  # Ahora recibe el esquema completo
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
+@trivia_router.get("/{trivia_id}", response_model=TriviaResponse)
+def get_trivia_by_id_endpoint(trivia_id: int, db: Session = Depends(get_db)):
     """
-    Actualiza completamente una trivia: nombre, descripción y preguntas asociadas.
-    Solo **Admins** pueden usar esta función.
+    Obtiene una trivia específica por su ID.
     """
-    return update_trivia(trivia_id, trivia_data, db, current_user)
+    return get_trivia_by_id(trivia_id, db)
 
 
 @trivia_router.delete("/{trivia_id}", response_model=dict)
@@ -78,24 +63,15 @@ def delete_trivia_endpoint(
     return delete_trivia(trivia_id, db, current_user)
 
 
-@trivia_router.get("/", response_model=List[TriviaResponse])
-def list_all_trivias_endpoint(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    """
-    Obtiene todas las trivias disponibles (solo para Admins).
-    """
-    return list_all_trivias(db, current_user)
-
-
-@trivia_router.get("/{trivia_id}", response_model=TriviaResponse)
-def get_trivia_by_id_endpoint(
+@trivia_router.put("/{trivia_id}", response_model=dict)
+def update_trivia_endpoint(
     trivia_id: int,
+    trivia_data: TriviaCreateWithQuestions,  # Ahora recibe el esquema completo
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Obtiene una trivia específica por su ID (solo para Admins).
+    Actualiza completamente una trivia: nombre, descripción y preguntas asociadas.
+    Solo **Admins** pueden usar esta función.
     """
-    return get_trivia_by_id(trivia_id, db, current_user)
+    return update_trivia(trivia_id, trivia_data, db, current_user)

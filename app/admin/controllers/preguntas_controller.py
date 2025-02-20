@@ -1,6 +1,10 @@
 from app.admin.models.opciones_model import Option
 from app.admin.models.preguntas_model import Question
-from app.admin.schemas.preguntas_schema import QuestionCreate, QuestionUpdate
+from app.admin.schemas.preguntas_schema import (
+    QuestionCreate,
+    QuestionResponse,
+    QuestionUpdate,
+)
 from app.usuarios.models.user import User
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
@@ -152,3 +156,27 @@ def update_question(
         "message": "Pregunta y opciones actualizadas exitosamente",
         "question_id": question.id,
     }
+
+
+def list_questions_with_options(db: Session):
+    """
+    Obtiene todas las preguntas junto con sus opciones.
+    """
+    questions = db.query(Question).all()
+
+    questions_with_options = [
+        QuestionResponse(
+            id=question.id,
+            text=question.text,
+            difficulty_id=question.difficulty_id,
+            options=[
+                {"text": option.text, "is_correct": option.is_correct}
+                for option in db.query(Option)
+                .filter(Option.question_id == question.id)
+                .all()
+            ],
+        )
+        for question in questions
+    ]
+
+    return questions_with_options

@@ -20,3 +20,7 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
     role = relationship("Role", back_populates="users")
+
+    # Relación con respuestas y trivias
+    user_answers = relationship("UserAnswer", back_populates="user")
+    user_trivias = relationship("UserTrivia", back_populates="user")
