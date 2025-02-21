@@ -21,6 +21,11 @@ class User(Base):
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
     role = relationship("Role", back_populates="users")
 
+    # Relación con la asignación de trivias
+    trivia_assignments = relationship(
+        "UserTriviaAssignment", back_populates="user", cascade="all, delete-orphan"
+    )
+
     # Relación con respuestas y trivias
     user_answers = relationship("UserAnswer", back_populates="user")
     user_trivias = relationship("UserTrivia", back_populates="user")

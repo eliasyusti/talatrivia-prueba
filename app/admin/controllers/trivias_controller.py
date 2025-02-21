@@ -42,14 +42,14 @@ def create_trivia_with_questions(
     """
     check_admin(current_user)
 
-    # ✅ Validar si la trivia ya existe
+    # Validar si la trivia ya existe
     existing_trivia = db.query(Trivia).filter(Trivia.name == trivia_data.name).first()
     if existing_trivia:
         raise HTTPException(
             status_code=400, detail="Ya existe una trivia con este nombre"
         )
 
-    # ✅ Validar que todas las preguntas existen antes de crear la trivia
+    # Validar que todas las preguntas existen antes de crear la trivia
     questions = (
         db.query(Question).filter(Question.id.in_(trivia_data.question_ids)).all()
     )
@@ -59,13 +59,13 @@ def create_trivia_with_questions(
             status_code=400, detail="Uno o más IDs de preguntas no existen"
         )
 
-    # ✅ Crear la trivia solo si las preguntas existen
+    # Crear la trivia solo si las preguntas existen
     new_trivia = Trivia(name=trivia_data.name, description=trivia_data.description)
     db.add(new_trivia)
     db.commit()
     db.refresh(new_trivia)
 
-    # ✅ Asociar preguntas a la trivia
+    # Asociar preguntas a la trivia
     for question in questions:
         db.execute(
             trivia_questions.insert().values(
@@ -78,17 +78,22 @@ def create_trivia_with_questions(
     return {"message": "Trivia creada con preguntas", "trivia_id": new_trivia.id}
 
 
-def list_all_trivias(db: Session):
+def list_all_trivias(db: Session, current_user: User = Depends(get_current_user)):
     """
-    Obtiene todas las trivias disponibles.
+    Obtiene todas las trivias disponibles (solo para Admins).
     """
+    check_admin(current_user)
     return db.query(Trivia).all()
 
 
-def get_trivia_by_id(trivia_id: int, db: Session):
+def get_trivia_by_id(
+    trivia_id: int, db: Session, current_user: User = Depends(get_current_user)
+):
     """
-    Obtiene una trivia específica por su ID.
+    Obtiene una trivia específica por su ID (solo para Admins).
     """
+    check_admin(current_user)
+
     trivia = db.query(Trivia).filter(Trivia.id == trivia_id).first()
     if not trivia:
         raise HTTPException(status_code=404, detail="Trivia no encontrada")
