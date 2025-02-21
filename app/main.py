@@ -13,6 +13,7 @@ from app.admin.routes.trivia_route import (
 )
 from app.admin.routes.estadisticas_route import estadisticas_router
 from app.admin.routes.asignar_trivias_route import user_trivia_assignment_router
+from app.admin.routes.gestionar_usuarios_route import gestionar_usuarios
 
 
 # Crear la aplicación FastAPI
@@ -42,6 +43,9 @@ def startup():
 # Incluir los routers
 
 app.include_router(user_router, prefix="/users", tags=["Users"])
+app.include_router(
+    gestionar_usuarios, prefix="/admin/gestion_usuarios", tags=["Gestion de usuarios"]
+)
 app.include_router(auth_router, prefix="/auth", tags=["Auth"])
 app.include_router(question_router, prefix="/admin/preguntas", tags=["Preguntas"])
 app.include_router(trivia_router, prefix="/admin/trivias", tags=["Trivias"])

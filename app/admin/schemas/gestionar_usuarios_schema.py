@@ -1,12 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
 
-class UserCreate(BaseModel):
-    name: str
-    email: EmailStr
-    password: str
-
-
 class UserUpdate(BaseModel):
     name: str
     email: EmailStr
@@ -32,16 +26,8 @@ class UserResponseSinRole(BaseModel):
         from_attributes = True
 
 
-class LoginRequest(BaseModel):
+class UserCreateAdmin(BaseModel):
+    name: str
     email: EmailStr
     password: str
-
-
-class Token(BaseModel):
-    access_token: str
-    refresh_token: str
-    token_type: str
-
-
-class RefreshTokenRequest(BaseModel):
-    refresh_token: str
+    role: str  # "Admin" o "User"
