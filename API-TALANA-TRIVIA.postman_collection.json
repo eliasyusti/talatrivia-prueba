@@ -1,0 +1,755 @@
+{
+	"info": {
+		"_postman_id": "91b3aa97-0c1f-4364-b136-8ad61e11de1d",
+		"name": "API-TALANA-TRIVIA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9432653"
+	},
+	"item": [
+		{
+			"name": "Login usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8086/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear usuario",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "//Regista usuarios con Rol User\r\n{\r\n  \"name\": \"jenni\",\r\n  \"email\": \"jenni@example.com\",\r\n  \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/users/registrar_usuario_jugador",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"users",
+						"registrar_usuario_jugador"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crea usuarios Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY5NzQ1M30.-KM2_bIO10LikIgOssjumcESjc3ydUJk9PdufHvn3X8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n//Crea usuario Admin o User\n{\n  \"name\": \"admin yusti\",\n  \"email\": \"yusti@example.com\",\n  \"password\": \"yusti123\",\n  \"role\": \"Admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/gestion_usuarios/crear_usuario_admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"gestion_usuarios",
+						"crear_usuario_admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY5NzQ1M30.-KM2_bIO10LikIgOssjumcESjc3ydUJk9PdufHvn3X8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/gestion_usuarios/listar_usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"gestion_usuarios",
+						"listar_usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Usuario por ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY5NzQ1M30.-KM2_bIO10LikIgOssjumcESjc3ydUJk9PdufHvn3X8"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/gestion_usuarios/usuario_by_id/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"gestion_usuarios",
+						"usuario_by_id",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualiza usuarios por ID",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY5NzQ1M30.-KM2_bIO10LikIgOssjumcESjc3ydUJk9PdufHvn3X8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"iness\",\n  \"email\": \"iness@example.com\",\n  \"password\": \"1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/gestion_usuarios/actualizar_usuario/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"gestion_usuarios",
+						"actualizar_usuario",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar usuario",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY5NzQ1M30.-KM2_bIO10LikIgOssjumcESjc3ydUJk9PdufHvn3X8"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/gestion_usuarios/eliminar_usuario/76",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"gestion_usuarios",
+						"eliminar_usuario",
+						"76"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Realizar trivia usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWNpYUBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDcwMzU1M30.DM4I1vpI1gUdXmfGHOd4d-nrZ1RhJuKUH5Ef27N7iBs"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"question_id\": 2,\n    \"selected_option_id\": 2\n  },\n    {\n    \"question_id\": 3,\n    \"selected_option_id\": 1\n  },\n    {\n    \"question_id\": 4,\n    \"selected_option_id\": 3\n  }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/users/realizar_trivia/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"users",
+						"realizar_trivia",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear preguntas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"donde esta ecuador\",\n  \"difficulty_id\": 3,\n  \"options\": [\n    {\n      \"text\": \"europa\",\n      \"is_correct\": false\n    },\n    {\n      \"text\": \"america\",\n      \"is_correct\": true\n    },\n    {\n      \"text\": \"asia\",\n      \"is_correct\": false\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/preguntas/Rs_preguntas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"preguntas",
+						"Rs_preguntas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todas las preguntas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/preguntas/Rs_preguntas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"preguntas",
+						"Rs_preguntas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar preguntas por ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/preguntas/Rs_preguntas/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"preguntas",
+						"Rs_preguntas",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Elimina preguntas y sus opciones",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/preguntas/Rs_preguntas/55",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"preguntas",
+						"Rs_preguntas",
+						"55"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualiza datos de las preguntas",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"text\": \"quien es el mejor jugador de la historia\",\n  \"difficulty_id\": 3,\n  \"options\": [\n    {\n      \"text\": \"Messi\",\n      \"is_correct\": true\n    },\n        {\n      \"text\": \"Pele\",\n      \"is_correct\": false\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/preguntas/Rs_preguntas/55",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"preguntas",
+						"Rs_preguntas",
+						"55"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crea trivias sin preguntas asociadas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"cheff\",\n  \"description\": \"esta triva es de cheff\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crea trivias con preguntas asociadas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"cuerpo\",\n  \"description\": \"trivia de cuerpo\",\n  \"question_ids\": [2]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias/with-questions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias",
+						"with-questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualiza datos de la trivia",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"algebra\",\n  \"description\": \"trivia de algebra\",\n  \"question_ids\": [2,3]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Elimina trivias",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar trivias por ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todas las trivias",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDYxODY2Mn0.v3oEneqZItgXFdpBMh4wN3-zhyB3fjQhTyxy_6QUM2o"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/trivias",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"trivias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Estadisticas de un usuario",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY4MTM0Nn0.HnldknQPSzABg2gyMWDau1QoJUUdXeR3uMZJoI2fT-s"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/estadisticas/rendimiento/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"estadisticas",
+						"rendimiento",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ranking de puntos trivias",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY4MTM0Nn0.HnldknQPSzABg2gyMWDau1QoJUUdXeR3uMZJoI2fT-s"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/admin/estadisticas/ranking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"admin",
+						"estadisticas",
+						"ranking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asignar trivias a usuarios",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY4MTM0Nn0.HnldknQPSzABg2gyMWDau1QoJUUdXeR3uMZJoI2fT-s"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_id\": 6,\n  \"trivia_ids\": [\n    1,2,3\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8086/user_trivia/admin/asignar_trivias",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"user_trivia",
+						"admin",
+						"asignar_trivias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar usauarios y sus trivias asignadas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY4MTM0Nn0.HnldknQPSzABg2gyMWDau1QoJUUdXeR3uMZJoI2fT-s"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/user_trivia/admin/users_trivias",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"user_trivia",
+						"admin",
+						"users_trivias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar trivias que el usuario debe realizar",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImV4cCI6MTc0MDY4MTM0Nn0.HnldknQPSzABg2gyMWDau1QoJUUdXeR3uMZJoI2fT-s"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8086/user_trivia/user/trivias/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8086",
+					"path": [
+						"user_trivia",
+						"user",
+						"trivias",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
