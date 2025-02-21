@@ -36,19 +36,26 @@ def create_trivia_with_questions_endpoint(
 
 
 @trivia_router.get("/", response_model=List[TriviaResponse])
-def list_all_trivias_endpoint(db: Session = Depends(get_db)):
+def list_all_trivias_endpoint(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """
-    Obtiene todas las trivias disponibles.
+    Obtiene todas las trivias disponibles (solo para Admins).
     """
-    return list_all_trivias(db)
+    return list_all_trivias(db, current_user)
 
 
 @trivia_router.get("/{trivia_id}", response_model=TriviaResponse)
-def get_trivia_by_id_endpoint(trivia_id: int, db: Session = Depends(get_db)):
+def get_trivia_by_id_endpoint(
+    trivia_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     """
-    Obtiene una trivia específica por su ID.
+    Obtiene una trivia específica por su ID (solo para Admins).
     """
-    return get_trivia_by_id(trivia_id, db)
+    return get_trivia_by_id(trivia_id, db, current_user)
 
 
 @trivia_router.delete("/{trivia_id}", response_model=dict)

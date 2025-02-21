@@ -7,7 +7,23 @@ class UserCreate(BaseModel):
     password: str
 
 
+class UserUpdate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+
 class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    role: str
+
+    class Config:
+        from_attributes = True
+
+
+class UserResponseSinRole(BaseModel):
     id: int
     name: str
     email: str
@@ -29,3 +45,10 @@ class Token(BaseModel):
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+
+class UserCreateAdmin(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: str  # "Admin" o "User"
